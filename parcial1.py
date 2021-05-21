@@ -6,7 +6,7 @@ import logging
 logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(threadName)s] - %(message)s', datefmt='%H:%M:%S',
                     level=logging.INFO)
 
-dato = 0
+dato = 43
 leido = False
 
 semaphore = threading.Semaphore(1)
@@ -19,8 +19,8 @@ class Procesador(threading.Thread):
     def run(self):
         global dato, leido
         while True:
-            logging.info(f'Se proceso el dato : {dato}')
             if not leido:
+                logging.info(f'Se proceso el dato : {dato}')
                 leido = True
                 semaphore.release()
             time.sleep(random.randint(1, 5))
@@ -41,10 +41,9 @@ class Generador(threading.Thread):
 
 def main():
     hilos = []
-
+    Generador().start()
     for _ in range(4):
         hilos.append(Procesador())
-    hilos.append(Generador())
 
     for h in hilos:
         h.start()
